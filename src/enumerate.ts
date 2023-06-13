@@ -16,9 +16,9 @@ const enumerate = async (root: string, suffix: string = "run") => {
 	if (suffix.search("/") !== -1) throw new Error("Suffix cannot contain slashes.")
 	if (suffix.startsWith(".") || suffix.endsWith("."))
 		throw new Error("Suffix cannot start or end with dots.")
-	const pathDirectorySubcommands = await Deno.realPath(root)
+	const path = await Deno.realPath(root)
 	const regExp = createRegExpFromSuffix(suffix)
-	return await Distree.fromDirectory(pathDirectorySubcommands, async path => {
+	return await Distree.fromDirectory(path, async path => {
 		const matched = path.match(regExp)
 		if (matched) return path
 		throw undefined
