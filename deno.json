@@ -5,7 +5,6 @@
 		"exactOptionalPropertyTypes": true,
 		"noUncheckedIndexedAccess": true
 	},
-	"importMap": "import-map.json",
 	"fmt": {
 		"options": {
 			"semiColons": false,

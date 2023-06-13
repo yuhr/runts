@@ -10,3 +10,4 @@ node_modules
 !.tool-versions
 
 dist
+deno.lock

@@ -1,6 +1,18 @@
 import Command from "./Command.ts"
 import enumerate from "./enumerate.ts"
+import { toFileUrl } from "https://deno.land/std@0.191.0/path/mod.ts"
 import Distree from "https://deno.land/x/distree@v2.0.0/index.ts"
+
+const toImportSpecifier = async (path: string) => toFileUrl(await Deno.realPath(path)).href
+const execute = async (path: string, args: readonly string[]) => {
+	const specifier = await toImportSpecifier(path)
+	const { default: command } = await import(specifier)
+	if (command instanceof Command) return (await command([...args])) ?? 0
+	else
+		throw new Error(
+			`The file \`${specifier}\` found but no command is default-exported: ${specifier}`,
+		)
+}
 
 const rec = async (
 	suffix: string,
@@ -8,22 +20,19 @@ const rec = async (
 	args: readonly string[],
 ): Promise<number> => {
 	const [arg, ...rest] = args
+
 	if (arg) {
-		const file = distree[`${arg}.${suffix}.ts`]
-		if (typeof file === "string") {
-			const { default: command } = await import(file)
-			if (command instanceof Command) return (await command(rest)) ?? 0
-		}
+		const key = `${arg}.${suffix}.ts`
+		const file = distree[key]
+		if (typeof file === "string") return await execute(file, rest)
 
 		const directory = distree[arg]
 		if (Distree.isDistree(directory)) return await rec(suffix, directory, rest)
 	}
 
-	const index = distree[`index.${suffix}.ts`]
-	if (typeof index === "string") {
-		const { default: command } = await import(index)
-		if (command instanceof Command) return (await command([...args])) ?? 0
-	}
+	const key = `index.${suffix}.ts`
+	const file = distree[key]
+	if (typeof file === "string") return await execute(file, args)
 
 	throw new Error("No such command exists.")
 }
