@@ -23,14 +23,7 @@ export default new Command(([name]) => {
 })
 ```
 
-`runts` has a built-in CLI, so you can run it using [`land`](https://github.com/ije/land):
-
-```sh
-$ land -A runts . greet
-Who are you?
-```
-
-Or if you install directly:
+`runts` has a built-in CLI, so you can install and run it like this:
 
 ```sh
 $ deno install -Af https://lib.deno.dev/x/runts@v1/runts.ts
