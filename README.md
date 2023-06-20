@@ -41,7 +41,7 @@ import dispatch from "https://lib.deno.dev/x/runts@v1/dispatch.ts"
 if (import.meta.main)
 	Deno.exit(
 		await dispatch({
-			root: ".",
+			root: import.meta.resolve("./."),
 			suffix: "run",
 			args: Deno.args,
 		}),
@@ -54,7 +54,11 @@ Changing the suffix when using the CLI is possible by `--suffix` option. When yo
 $ runts --suffix cmd . greet World
 ```
 
-## Suffix Restriction
+## Publishing Your Script
+
+You may want to publish your script that uses `dispatch` and let your users run the subcommands. Unfortunately, **running remote subcommands doesn't work out of the box, and requires a prebuilt index file**, because `deno.land` does not provide a reliable [way](https://github.com/denoland/website_feedback/issues/26) to discover what modules are present in a published package, so you need to run `runts --build <root>` each time you add or remove subcommands. This option will generate a `runtslist.ts` file in the `<root>` and you have to include it to your releases.
+
+## Suffix Restrictions
 
 - Cannot be empty
 - Cannot contain slashes

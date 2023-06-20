@@ -11,11 +11,13 @@ const createRegExpFromSuffix = (suffix: string) =>
  * @param root The directory to enumerate subcommands from.
  * @param suffix The suffix of the subcommand filenames, e.g. `*.<suffix>.ts`.
  */
-const enumerate = async (root: string, suffix: string = "run") => {
+const enumerate = async (root: string | URL, suffix: string = "run") => {
 	if (!suffix) throw new Error("Suffix cannot be empty.")
 	if (suffix.search("/") !== -1) throw new Error("Suffix cannot contain slashes.")
 	if (suffix.startsWith(".") || suffix.endsWith("."))
 		throw new Error("Suffix cannot start or end with dots.")
+	if (root instanceof URL && root.protocol !== "file:")
+		throw new Error("Only file URLs are supported for enumerating subcommands.")
 	const path = await Deno.realPath(root)
 	const regExp = createRegExpFromSuffix(suffix)
 	return await Distree.fromDirectory(path, async path => {
