@@ -104,10 +104,6 @@ export default CommandCustom
 
 And simply replace `Command` with this in your `*.run.ts`.
 
-## Caveat: Match Your Versions
-
-When running `runts` as your daily command runner, it's discouraged to import the modules from URLs with a version number further than the major, like `https://deno.land/x/runts@vX.Y.Z`, unless you can pin all the use of this library to the exact version. This is because `runts` tests a file to be a command by `<default export> instanceof Command`, which requires you to match the versions of `Command` constructor you imported inside `*.run.ts` and the one `dispatch` refers to internally. Use URLs like `https://lib.deno.dev/x/runts@v1` instead and match your versions by the local caches, as [`deno.land` doesn't support semver ranges currently](https://github.com/denoland/dotland/pull/1826#issuecomment-1161530348). If you encountered a problem of not finding commands that worked before, please ensure the versions you use are all the same. [Reloading caches](https://deno.com/manual@v1.34.2/basics/modules/reloading_modules) should be helpful.
-
 ## Semver Policy
 
 Only the default exports are public APIs and remain stable throughout minor version bumps. Named exports should be considered private and unstable. Any single release may randomly contain breaking changes to named exports, so users should avoid using them where possible.
