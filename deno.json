@@ -4,11 +4,5 @@
 		"alwaysStrict": true,
 		"exactOptionalPropertyTypes": true,
 		"noUncheckedIndexedAccess": true
-	},
-	"fmt": {
-		"options": {
-			"semiColons": false,
-			"useTabs": true
-		}
 	}
 }
