@@ -1,4 +1,4 @@
-import Command from "https://lib.deno.dev/x/runts@v1/Command.ts"
+import Command from "../src/Command.ts"
 
 class CommandCustom extends Command {
 	constructor(executor: Command.Executor) {

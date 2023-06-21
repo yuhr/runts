@@ -1,0 +1,1 @@
+export default { "greet.run.ts": "./greet.run.ts", "index.run.ts": "./index.run.ts" }
