@@ -8,7 +8,11 @@ interface Command {
 
 class Command {
 	constructor(executor: Command.Executor) {
-		return Object.setPrototypeOf(executor, new.target.prototype)
+		return Object.defineProperty(
+			Object.setPrototypeOf(executor, new.target.prototype),
+			Symbol.for("runts"),
+			{ value: undefined, configurable: false, enumerable: false, writable: false },
+		)
 	}
 }
 

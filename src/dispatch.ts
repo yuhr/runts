@@ -1,4 +1,3 @@
-import Command from "./Command.ts"
 import enumerate from "./enumerate.ts"
 import { join, toFileUrl, isAbsolute } from "https://deno.land/std@0.191.0/path/mod.ts"
 import Distree from "https://deno.land/x/distree@v2.0.0/index.ts"
@@ -6,7 +5,7 @@ import Distree from "https://deno.land/x/distree@v2.0.0/index.ts"
 const execute = async (root: URL, path: string, args: readonly string[]) => {
 	const specifier = new URL(path, root.href).href
 	const { default: command } = await import(specifier)
-	if (command instanceof Command) return (await command([...args])) ?? 0
+	if (Symbol.for("runts") in command) return (await command([...args])) ?? 0
 	else
 		throw new Error(
 			`The file \`${specifier}\` found but no command is default-exported: ${specifier}`,
